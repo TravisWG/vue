@@ -10,7 +10,11 @@ var tasklist = new Vue({
 	methods: {
 		addTask: function() { 
 			console.log(document.getElementById("addItem").value);
-			tasklist.items.push({message: document.getElementById("addItem").value}); 
+			this.items.push({message: document.getElementById("addItem").value}); 
+		},
+		removeTask: function(key) {
+			console.log(key);
+			this.items.splice(key, 1);
 		}
 	}
 })
