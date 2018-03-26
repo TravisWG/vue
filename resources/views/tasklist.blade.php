@@ -31,16 +31,29 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Task List
+                    <h2>Task List</h2>
                 </div>
                 <div id="tasklist">
-                    <ul>
-                        <li v-for="(item, key) in items">
-                            @{{ item.message }}  <i v-on:click="removeTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
-                        </li>
-                    </ul>
-                    <input id="addItem" type="text">
-                    <button v-on:click="addTask">Add Task</button>
+                    <div class="tasks">
+                        <ul>
+                            <li v-for="(task, key) in tasks">
+                                @{{ task.message }}
+                                <i v-on:click="moveToCompletedTasks(key)" class="fas fa-check" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:green;background: black"></i>  
+                                <i v-on:click="removeTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
+                            </li>
+                        </ul>
+                        <input id="addTask" type="text">
+                        <button v-on:click="addTask">Add Task</button>
+                    </div>
+                    <div class="completedTasks">
+                        <h2>Completed Tasks</h2>
+                        <ul>
+                            <li v-for="(task, key) in completedTasks">
+                                @{{ task.message }}
+                                 <i v-on:click="unmarkCompletedTasks(key)" class="fas fa-undo" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:yellow;background: black"></i>    
+                                <i v-on:click="removeCompletedTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
+                            </li>
+                        </ul>
                 </div>
             </div>
         </div>

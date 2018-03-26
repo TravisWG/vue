@@ -1,20 +1,32 @@
 var tasklist = new Vue({
 	el: "#tasklist",
 	data: {
-		items: [
+		tasks: [
 			{message:"Laundry"},
 		 	{message: "Make Food"},
 		 	{message:"Vacuum floor"}
-		 ]
+		 ],
+		 completedTasks: []
+
 	},
 	methods: {
 		addTask: function() { 
-			console.log(document.getElementById("addItem").value);
-			this.items.push({message: document.getElementById("addItem").value}); 
+			this.tasks.push({message: document.getElementById("addTask").value}); 
 		},
 		removeTask: function(key) {
-			console.log(key);
-			this.items.splice(key, 1);
+			this.tasks.splice(key, 1);
+		},
+		moveToCompletedTasks: function(key){
+			this.completedTasks.push(this.tasks[key]);
+			this.removeTask(key);
+		},
+
+		removeCompletedTask: function(key) {
+			this.completedTasks.splice(key, 1);
+		},
+		unmarkCompletedTasks: function(key){
+			this.tasks.push(this.completedTasks[key]);
+			this.removeCompletedTask(key);
 		}
 	}
 })
