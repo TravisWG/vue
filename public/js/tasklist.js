@@ -9,7 +9,13 @@ var tasklist = new Vue({
 		 completedTasks: []
 
 	},
+	mounted: function() {
+      this.fetchData();
+    },
 	methods: {
+		fetchData: function() {
+			console.log('Data FETACHED!!');
+		},
 		addTask: function() { 
 			this.tasks.push({message: document.getElementById("addTask").value}); 
 		},
@@ -20,7 +26,6 @@ var tasklist = new Vue({
 			this.completedTasks.push(this.tasks[key]);
 			this.removeTask(key);
 		},
-
 		removeCompletedTask: function(key) {
 			this.completedTasks.splice(key, 1);
 		},
