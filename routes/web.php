@@ -19,3 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/tasklist', 'TasklistController@index')->name('task-list');
+
+Route::get('/tasklist/fetch/incomplete', 'TasklistController@getTasklist');
+Route::get('/tasklist/fetch/completed', 'TasklistController@getCompletedTasklist');

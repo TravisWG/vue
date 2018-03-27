@@ -1,23 +1,26 @@
 var tasklist = new Vue({
 	el: "#tasklist",
 	data: {
-		tasks: [
-			{message:"Laundry"},
-		 	{message: "Make Food"},
-		 	{message:"Vacuum floor"}
-		 ],
-		 completedTasks: []
-
+		tasks: [],
+		completedTasks: []
 	},
 	mounted: function() {
       this.fetchData();
     },
 	methods: {
 		fetchData: function() {
-			console.log('Data FETACHED!!');
+			var self = this;
+			axios.get('/tasklist/fetch/incomplete')
+				.then(response => {
+	                self.tasks = response.data;
+				});
+			axios.get('/tasklist/fetch/completed')
+				.then(response => {
+	                self.completedTasks = response.data;
+				});
 		},
 		addTask: function() { 
-			this.tasks.push({message: document.getElementById("addTask").value}); 
+			this.tasks.push({task: document.getElementById("addTask").value}); 
 		},
 		removeTask: function(key) {
 			this.tasks.splice(key, 1);

@@ -15,6 +15,9 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <!-- Axios & jQuery -->
+        <script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -37,7 +40,7 @@
                     <div class="tasks">
                         <ul>
                             <li v-for="(task, key) in tasks">
-                                @{{ task.message }}
+                                @{{ task.task }}
                                 <i v-on:click="moveToCompletedTasks(key)" class="fas fa-check" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:green;background: black"></i>  
                                 <i v-on:click="removeTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
                             </li>
@@ -49,11 +52,12 @@
                         <h2>Completed Tasks</h2>
                         <ul>
                             <li v-for="(task, key) in completedTasks">
-                                @{{ task.message }}
+                                @{{ task.task }}
                                  <i v-on:click="unmarkCompletedTasks(key)" class="fas fa-undo" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:yellow;background: black"></i>    
                                 <i v-on:click="removeCompletedTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
                             </li>
                         </ul>
+                    </div>
                 </div>
             </div>
         </div>
