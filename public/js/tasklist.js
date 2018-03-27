@@ -19,22 +19,85 @@ var tasklist = new Vue({
 	                self.completedTasks = response.data;
 				});
 		},
+
 		addTask: function() { 
-			this.tasks.push({task: document.getElementById("addTask").value}); 
+			var self = this;
+			axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+			axios.post('/tasklist/addTask', {    			
+    			task: document.getElementById("addTask").value,	
+  			})
+  			.then(function (response) {
+    			self.tasks.push(response.data);
+  			})
+  			.catch(function (error) {
+    			console.log("There was an error adding the new task")
+  			});
 		},
+
 		removeTask: function(key) {
-			this.tasks.splice(key, 1);
+			var self = this;
+			axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+			axios.post('/tasklist/removeTask', {    			
+    			task: self.tasks[key]
+  			})
+  			.then(function (response) {
+				self.tasks.splice(key, 1);
+			})
+			.catch(function (error) {
+				console.log("Error removing task")
+			});
 		},
-		moveToCompletedTasks: function(key){
-			this.completedTasks.push(this.tasks[key]);
-			this.removeTask(key);
-		},
+
 		removeCompletedTask: function(key) {
-			this.completedTasks.splice(key, 1);
+			var self = this;
+			axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+			axios.post('/tasklist/removeTask', {    			
+    			task: self.completedTasks[key]
+  			})
+  			.then(function (response) {
+				self.completedTasks.splice(key, 1);
+			})
+			.catch(function (error) {
+				console.log("Error removing task");
+			});
 		},
+
+		toggleStatus: function(task, status){
+			var self = this;		
+			axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+			axios.post('/tasklist/toggleStatus', {    			
+    			task: task
+  			})
+  			.then(function (response) {
+  				console.log('Status toggled');
+  				console.log(response.data);
+  				if(status == "completed"){
+  					console.log(status);
+  					self.completedTasks.push(task);
+					self.tasks.splice(task.key, 1);
+  				}
+  				if(status == "incomplete"){
+					self.tasks.push(task);
+					self.completedTasks.splice(task.key, 1);
+  				}
+			})
+			.catch(function (error) {
+				console.log("Unable to toggle status");
+			});
+		},
+
+		moveToCompletedTasks: function(key){
+			var task = this.tasks[key];
+				task.key = key;
+			var status = "completed";
+			var toggle = this.toggleStatus(task, status);
+		},
+
 		unmarkCompletedTasks: function(key){
-			this.tasks.push(this.completedTasks[key]);
-			this.removeCompletedTask(key);
-		}
+			var task = this.completedTasks[key];
+				task.key = key;
+			var status = "incomplete";			
+			var toggle = this.toggleStatus(task, status);
+		},
 	}
 })

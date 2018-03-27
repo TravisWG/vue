@@ -22,3 +22,7 @@ Route::get('/tasklist', 'TasklistController@index')->name('task-list');
 
 Route::get('/tasklist/fetch/incomplete', 'TasklistController@getTasklist');
 Route::get('/tasklist/fetch/completed', 'TasklistController@getCompletedTasklist');
+
+Route::post('tasklist/addTask', 'TasklistController@addNewTask');
+Route::post('tasklist/removeTask', 'TasklistController@removeTask');
+Route::post('tasklist/toggleStatus', 'TasklistController@toggleTaskCompletionStatus');
