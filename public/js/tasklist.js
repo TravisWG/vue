@@ -69,10 +69,7 @@ var tasklist = new Vue({
     			task: task
   			})
   			.then(function (response) {
-  				console.log('Status toggled');
-  				console.log(response.data);
   				if(status == "completed"){
-  					console.log(status);
   					self.completedTasks.push(task);
 					self.tasks.splice(task.key, 1);
   				}

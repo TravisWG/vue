@@ -30,4 +30,8 @@ class User extends Authenticatable
     public function tasklist() {
         return $this->hasOne('App\Tasklist');
     }
+
+    public function tasks() {
+        return $this->hasManyThrough('App\Task', 'App\Tasklist');
+    }
 }

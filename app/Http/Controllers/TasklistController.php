@@ -20,13 +20,15 @@ class TasklistController extends Controller
         return view('tasklist');
     }
 
-    public function getTasklist(){
-        $tasks = Task::where('completed', 0)->get()->toArray();
+    public function getTasklist(){        
+        $tasklist_id = Auth::user()->tasklist->id;
+        $tasks = Task::where('completed', 0)->where('tasklist_id', $tasklist_id)->get()->toArray();
         return $tasks;
     }
 
     public function getCompletedTasklist(){
-        $completedTasks = Task::where('completed', 1)->get()->toArray();
+        $tasklist_id = Auth::user()->tasklist->id;
+        $completedTasks = Task::where('completed', 1)->where('tasklist_id', $tasklist_id)->get()->toArray();
         return $completedTasks;
     }
 
@@ -48,7 +50,7 @@ class TasklistController extends Controller
     public function removeTask(Request $request) {
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
-        if($task){
+        if($task && $this->checkTaskOwnership($task)){
             $task->delete();
             $return = ['status' => 'success'];
         }
@@ -58,11 +60,18 @@ class TasklistController extends Controller
     public function toggleTaskCompletionStatus(Request $request) {
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
-        if($task){
+        if($task && $this->checkTaskOwnership($task)){
             $task->completed = !$task->completed;
             $task->save();
             $return = ['status' => 'success'];
         }
         return $return;
+    }
+
+    public function checkTaskOwnership($task) {
+        if($task->tasklist->user == Auth::user()) {
+            return true;
+        }
+        return false;
     }
 }

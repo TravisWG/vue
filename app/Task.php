@@ -11,13 +11,10 @@ class Task extends Model
     protected $fillable = [
         'completed',
         'task',
+        'tasklist_id'
     ];
 
     public function tasklist() {
-    	return $this->hasOne('App\Tasklist');
-    }
-
-    public function user() {
-    	return $this->tasklist()->user();
+    	return $this->belongsTo('App\Tasklist');
     }
 }

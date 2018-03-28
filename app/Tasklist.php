@@ -13,15 +13,6 @@ class Tasklist extends Model
         'tasklist_id'
     ];
 
-    public function createTasklist() {
-        $this::create([
-                'task' => $request->task,
-                'tasklist_id' => Auth::user()->tasklist->id,
-                'completed' => false
-            ]);
-            $return = ['status' => 'success'];
-    }
-
     public function user(){
     	return $this->belongsTo('App\User');
     }
