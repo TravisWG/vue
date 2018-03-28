@@ -9,6 +9,10 @@ use App\Tasklist;
 
 class TasklistController extends Controller
 {
+    public function __construct(){
+    $this->middleware('auth');
+    }
+
     public function index(){
         $tasklist = Tasklist::firstOrCreate([
             'user_id' => Auth::user()->id

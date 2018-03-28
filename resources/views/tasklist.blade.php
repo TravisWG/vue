@@ -21,43 +21,86 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    <h2>Task List</h2>
-                </div>
-                <div id="tasklist">
-                    <div class="tasks">
-                        <ul>
-                            <li v-for="(task, key) in tasks">
-                                @{{ task.task }}
-                                <i v-on:click="moveToCompletedTasks(key)" class="fas fa-check" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:green;background: black"></i>  
-                                <i v-on:click="removeTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
-                            </li>
-                        </ul>
-                        <input id="addTask" type="text">
-                        <button v-on:click="addTask">Add Task</button>
+        <div id="app">
+            <nav class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="{{ url('/home') }}">Home</a>
                     </div>
-                    <div class="completedTasks">
-                        <h2>Completed Tasks</h2>
-                        <ul>
-                            <li v-for="(task, key) in completedTasks">
-                                @{{ task.task }}
-                                <i v-on:click="unmarkCompletedTasks(key)" class="fas fa-undo" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:yellow;background: black"></i>    
-                                <i v-on:click="removeCompletedTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
-                            </li>
-                        </ul>
+                        <div class="flex-center position-ref full-height">
+                            <div class="top-right links"> 
+                                <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    
+                                    <ul class="nav navbar-nav">
+                                        &nbsp;
+                                    </ul>
+                                <ul class="nav navbar-nav navbar-right">    
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                                            {{ Auth::user()->name }} <span class="caret"></span>
+                                        </a>                    
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">
+                                                    Logout
+                                                </a>
+                                                <a href="{{ route('task-list') }}">                                            
+                                                    My Tasklist
+                                                </a>
+
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                    {{ csrf_field() }}
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="content">
+                            <div class="row">
+                                <div id="tasklist"> 
+                                    <div class="col-md-6">
+                                        <div class="title m-b-md">
+                                            <h2>Task List</h2>
+                                        </div>                                   
+                                        <div class="tasks">
+                                            <ul>
+                                                <li v-for="(task, key) in tasks">
+                                                    @{{ task.task }}
+                                                    <i v-on:click="moveToCompletedTasks(key)" class="fas fa-check" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:green;background: black"></i>  
+                                                    <i v-on:click="removeTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
+                                                </li>
+                                            </ul>
+                                            <br>
+                                            <input id="addTask" type="text">
+                                            <button v-on:click="addTask">Add Task</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="completedTasks">
+                                            <h2>Completed Tasks</h2>
+                                            <ul>
+                                                <li v-for="(task, key) in completedTasks">
+                                                    @{{ task.task }}
+                                                    <i v-on:click="unmarkCompletedTasks(key)" class="fas fa-undo" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:yellow;background: black"></i>    
+                                                    <i v-on:click="removeCompletedTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
