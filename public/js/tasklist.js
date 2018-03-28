@@ -86,6 +86,8 @@ var tasklist = new Vue({
 		moveToCompletedTasks: function(key){
 			var task = this.tasks[key];
 				task.key = key;
+				task.completed_at = this.formatTimeString();
+				
 			var status = "completed";
 			var toggle = this.toggleStatus(task, status);
 		},
@@ -96,5 +98,22 @@ var tasklist = new Vue({
 			var status = "incomplete";			
 			var toggle = this.toggleStatus(task, status);
 		},
+
+		formatTimeString: function(){
+			var time = new Date();
+			var dayOrNight = 'AM'
+			var hour = time.getHours()
+			if (hour > 12){
+				hour = hour - 12;
+				if (hour.toString().length < 2){
+					hour = "0" + hour;
+				}
+				dayOrNight = 'PM';
+			}
+			var timeString = ("0" + time.getMonth()).slice(-2) + '/' + ("0" + time.getDate()).slice(-2) + '/' + time.getFullYear() +
+							 ' ' + hour + ':' + time.getMinutes() + ':' + time.getSeconds() + ' ' + dayOrNight;
+
+			return timeString;
+		}
 	}
 })

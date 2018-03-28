@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Task;
 use App\Tasklist;
+use Carbon\Carbon;
 
 class TasklistController extends Controller
 {
@@ -28,8 +29,11 @@ class TasklistController extends Controller
 
     public function getCompletedTasklist(){
         $tasklist_id = Auth::user()->tasklist->id;
-        $completedTasks = Task::where('completed', 1)->where('tasklist_id', $tasklist_id)->get()->toArray();
-        return $completedTasks;
+        $completedTasks = Task::where('completed', 1)->where('tasklist_id', $tasklist_id)->get();
+        foreach($completedTasks as $task){
+            $task->completed_at = $task->formatCompletedAtDate();
+        }
+        return $completedTasks->toArray();
     }
 
     public function addNewTask(Request $request) {
@@ -62,6 +66,7 @@ class TasklistController extends Controller
         $task = Task::where('id', $request->task['id'])->first();
         if($task && $this->checkTaskOwnership($task)){
             $task->completed = !$task->completed;
+            $task->completed_at = Carbon::now();
             $task->save();
             $return = ['status' => 'success'];
         }

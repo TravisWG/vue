@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Task extends Model
 {
@@ -16,5 +17,9 @@ class Task extends Model
 
     public function tasklist() {
     	return $this->belongsTo('App\Tasklist');
+    }
+
+    public function formatCompletedAtDate(){
+        return Carbon::parse($this->completed_at)->format('m/d/Y h:i:s A');
     }
 }

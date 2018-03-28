@@ -80,6 +80,7 @@
                                                     @{{ task.task }}
                                                     <i v-on:click="unmarkCompletedTasks(key)" class="fas fa-undo" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:yellow;background: black"></i>    
                                                     <i v-on:click="removeCompletedTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
+                                                    <div class="small"> Date completed: @{{ task.completed_at }}</div>
                                                 </li>
                                             </ul>
                                         </div>
