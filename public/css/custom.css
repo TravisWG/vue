@@ -1,0 +1,33 @@
+.list-item {
+	border: solid 1px #00000075;
+	-webkit-box-shadow: 5px 5px 12px #00000075;
+	-moz-box-shadow: 5px 5px 12px #00000075);
+	box-shadow: 5px 5px 12px #00000075;
+	padding: 10px 2px 10px 2px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+	min-height: 100%;
+	display:flex;
+	flex-wrap: wrap;
+}
+
+.list-item .list-text {
+	font-size: 18px;
+}
+
+.list-buttons button {
+	float: right;
+	font-size: 12px;
+	margin-right:2px; 
+	padding:2px;
+	border-radius:5px;
+}
+
+.list-buttons button:first-child { 
+    margin-bottom: 3px
+}
+
+.completion-time {
+	text-align: center;
+	margin-top: 5px;
+}

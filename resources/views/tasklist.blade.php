@@ -16,6 +16,7 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
         <!-- Axios & jQuery -->
         <script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -59,14 +60,23 @@
                                         <div class="title m-b-md">
                                             <h2>Task List</h2>
                                         </div>                                   
-                                        <div class="tasks">
-                                            <ul>
-                                                <li v-for="(task, key) in tasks">
-                                                    @{{ task.task }}
-                                                    <i v-on:click="moveToCompletedTasks(key)" class="fas fa-check" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:green;background: black"></i>  
-                                                    <i v-on:click="removeTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
-                                                </li>
-                                            </ul>
+                                        <div class="task-list">                                            
+                                                <div class="list-item" v-for="(task, key) in tasks">
+                                                    <div class="col-md-6 list-text">
+                                                        @{{ task.task }}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="list-buttons">
+                                                            <button v-on:click="moveToCompletedTasks(key)">
+                                                                <i class="fas fa-check"></i> 
+                                                                Mark Complete
+                                                            </button>
+                                                            <button v-on:click="removeTask(key)">
+                                                                <i class="fas fa-times"></i> Remove
+                                                            </button>
+                                                    </div>
+                                                    </div> 
+                                                </div>
                                             <br>
                                             <input id="addTask" type="text">
                                             <button v-on:click="addTask">Add Task</button>
@@ -75,14 +85,27 @@
                                     <div class="col-md-6">
                                         <div class="completedTasks">
                                             <h2>Completed Tasks</h2>
-                                            <ul>
-                                                <li v-for="(task, key) in completedTasks">
-                                                    @{{ task.task }}
-                                                    <i v-on:click="unmarkCompletedTasks(key)" class="fas fa-undo" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:yellow;background: black"></i>    
-                                                    <i v-on:click="removeCompletedTask(key)" class="fas fa-times" style="margin-left:2px; padding:1px;border-radius:5px; border: solid 1px black; color:red;background: black"></i> 
-                                                    <div class="small"> Date completed: @{{ task.completed_at }}</div>
-                                                </li>
-                                            </ul>
+                                            <div class="task-list">
+                                                <div class="list-item" v-for="(task, key) in completedTasks">
+                                                    <div class="col-md-6 list-text">
+                                                        @{{ task.task }}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="col-md-12 list-buttons">
+                                                            <button v-on:click="unmarkCompletedTasks(key)">
+                                                                <i class="fas fa-undo"></i> Mark Active
+                                                            </button>
+                                                            <button v-on:click="removeCompletedTask(key)">
+                                                                <i class="fas fa-times"></i> Remove
+                                                            </button> 
+                                                        </div>                                                
+                                                    </div>
+                                                <div class="col-md-10 col-md-offset-2">
+                                                    <div class="small completion-time">
+                                                        Date completed: @{{ task.completed_at }}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
