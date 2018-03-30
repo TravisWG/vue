@@ -123,20 +123,19 @@ var tasklist = new Vue({
         },
 
         formatTimeString: function() {
-            var time = new Date();
-            var hour = time.getHours();
-            var minute = time.getMinutes();
+            var date = new Date();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
             var ampm = hour >= 12 ? 'PM' : 'AM';
             
             hour = hour ? hour : 12; //midnight(00) should be 12.
             hour = hour > 12 ? hour - 12 : hour;
             hour = hour.toString().length < 2 ? "0" + hour : hour;
             minute = minute.toString().length < 2 ? "0" + minute : minute;
+            var dateString = ("0" + (date.getMonth() + 1)).slice(-2) + '/' + ("0" + date.getDate()).slice(-2) + '/' + date.getFullYear() +
+                ' ' + hour + ':' + date.getMinutes() + ':' + date.getSeconds() + ' ' + ampm;
 
-            var timeString = ("0" + time.getMonth()).slice(-2) + '/' + ("0" + time.getDate()).slice(-2) + '/' + time.getFullYear() +
-                ' ' + hour + ':' + time.getMinutes() + ':' + time.getSeconds() + ' ' + ampm;
-
-            return timeString;
+            return dateString;
         }
     }
 })

@@ -44,7 +44,8 @@ class TasklistController extends Controller
             $task = Task::create([
                 'task' => $request->task,
                 'tasklist_id' => $tasklistId,
-                'completed' => false
+                'completed' => false,
+                'edit' => false
             ]);
             $return = $task;
         }
