@@ -27,7 +27,10 @@ var tasklist = new Vue({
                     task: document.getElementById("addTask").value,
                 })
                 .then(function(response) {
-                    self.tasks.push(response.data);
+                    if(response.data.status != "error"){
+                        self.tasks.push(response.data);
+                        document.getElementById('addTask').value = '';
+                    };
                 })
                 .catch(function(error) {
                     console.log("There was an error adding the new task")
