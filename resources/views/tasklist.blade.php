@@ -61,22 +61,23 @@
                                             <h2>Task List</h2>
                                         </div>                                   
                                         <div class="task-list">                                            
-                                                <div class="list-item" v-for="(task, key) in tasks">
-                                                    <div class="col-md-6 list-text">
-                                                        @{{ task.task }}
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="list-buttons">
-                                                            <button v-on:click="moveToCompletedTasks(key)">
-                                                                <i class="fas fa-check"></i> 
-                                                                Mark Complete
-                                                            </button>
-                                                            <button v-on:click="removeTask(key)">
-                                                                <i class="fas fa-times"></i> Remove
-                                                            </button>
-                                                    </div>
-                                                    </div> 
+                                            <div class="list-item" v-for="(task, key) in tasks">
+                                                <div class="col-md-6 list-text" v-show="!task.edit" v-on:click="toggleEditTask(key)">
+                                                    @{{ task.task }}
                                                 </div>
+                                                <input type="text" v-show="task.edit" v-model="task.task" v-on:keydown.enter="saveEditTask(key)">
+                                                <div class="col-md-6">
+                                                    <div class="list-buttons">
+                                                        <button v-on:click="moveToCompletedTasks(key)">
+                                                            <i class="fas fa-check"></i> 
+                                                            Mark Complete
+                                                        </button>
+                                                        <button v-on:click="removeTask(key)">
+                                                            <i class="fas fa-times"></i> Remove
+                                                        </button>
+                                                    </div>
+                                                </div> 
+                                            </div>
                                             <br>
                                             <input id="addTask" type="text">
                                             <button v-on:click="addTask">Add Task</button>

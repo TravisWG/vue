@@ -24,6 +24,7 @@ class TasklistController extends Controller
     public function getTasklist(){        
         $tasklist_id = Auth::user()->tasklist->id;
         $tasks = Task::where('completed', 0)->where('tasklist_id', $tasklist_id)->get()->toArray();
+
         return $tasks;
     }
 
@@ -38,16 +39,29 @@ class TasklistController extends Controller
 
     public function addNewTask(Request $request) {
         $return = ['status' => 'error'];
-        $userId = Auth::user()->tasklist->id;
+        $tasklistId = Auth::user()->tasklist->id;
         if ($request->task != null){
             $task = Task::create([
                 'task' => $request->task,
-                'tasklist_id' => $userId,
+                'tasklist_id' => $tasklistId,
                 'completed' => false
             ]);
             $return = $task;
         }
 
+        return $return;
+    }
+
+    public function editTask(Request $request) {
+
+        $task = Task::find($request->task['id']);
+        $return = ['status' => 'error', 'task' => $task->task];
+        //dd($return);
+        if ($request->task['task'] != null){
+            $task->task = $request->task['task'];
+            $task->save();
+            $return = ['status' => 'success', 'task' => $task->task];
+        }
         return $return;
     }
 

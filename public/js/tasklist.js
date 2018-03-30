@@ -37,6 +37,26 @@ var tasklist = new Vue({
                 });
         },
 
+        toggleEditTask: function(key){
+            var task = this.tasks[key];
+            task.edit = task.edit ? false : true;
+        },
+
+        saveEditTask: function(key) {
+            var self = this;
+            self.toggleEditTask(key);
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            axios.post('/tasklist/editTask', {
+                    task: self.tasks[key]
+                })
+                .then(function(response) {
+                    self.tasks[key].task = response.data.task;      
+                })
+                .catch(function(error) {
+                    console.log("There was an error adding the new task")
+                });
+        },
+
         removeTask: function(key) {
             var self = this;
             axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

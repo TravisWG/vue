@@ -12,7 +12,8 @@ class Task extends Model
     protected $fillable = [
         'completed',
         'task',
-        'tasklist_id'
+        'tasklist_id',
+        'edit'
     ];
 
     public function tasklist() {
