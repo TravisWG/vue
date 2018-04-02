@@ -1,4 +1,4 @@
-.list-item {
+.task-list .list-item {
 	border: solid 1px #00000075;
 	-webkit-box-shadow: 5px 5px 12px #00000075;
 	-moz-box-shadow: 5px 5px 12px #00000075);
@@ -9,6 +9,27 @@
 	min-height: 100%;
 	display:flex;
 	flex-wrap: wrap;
+}
+
+.archive-list {
+	margin-bottom: 25px;
+}
+
+.archive-list .list-item{
+	border: solid 1px #00000075;
+	border-bottom: none;
+	min-height: 100%;
+	display:flex;
+	flex-wrap: wrap;
+	padding: 15px 0px 15px 0px;
+}
+
+.archive-list .list-item:last-child{
+	border: solid 1px #00000075;
+}
+
+.archive-list .list-item .list-subtext {
+	text-align: right;
 }
 
 .list-item .list-text {

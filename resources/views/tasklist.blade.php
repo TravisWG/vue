@@ -28,22 +28,25 @@
                     <div class="navbar-header">
                         <a class="navbar-brand" href="{{ url('/home') }}">Home</a>
                     </div>
-                        <div class="flex-center position-ref full-height">
-                            <div class="top-right links"> 
-                                <div class="collapse navbar-collapse" id="app-navbar-collapse">                    
-                                    <ul class="nav navbar-nav">
-                                        &nbsp;
-                                    </ul>
+                    <div class="flex-center position-ref full-height">
+                        <div class="top-right links"> 
+                            <div class="collapse navbar-collapse" id="app-navbar-collapse">                    
+                                <ul class="nav navbar-nav">
+                                    &nbsp;
+                                </ul>
                                 <ul class="nav navbar-nav navbar-right"> 
                                     <li>
                                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('task-list') }}">My Tasklist</a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('archived-tasks') }}">Task History</a>
+                                    </li>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                    </form>
                                 </ul>
                             </div>                            
                         </div>

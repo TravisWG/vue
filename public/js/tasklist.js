@@ -108,6 +108,9 @@ var tasklist = new Vue({
 
         moveToCompletedTasks: function(key) {
             var task = this.tasks[key];
+            if(task.edit == true){
+                this.saveEditTask(key);
+            }
             task.key = key;
             task.completed_at = this.formatTimeString();
 

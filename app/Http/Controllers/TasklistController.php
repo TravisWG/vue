@@ -28,6 +28,13 @@ class TasklistController extends Controller
         return $tasks;
     }
 
+    public function getArchivedTasks(){        
+        $tasklist_id = Auth::user()->tasklist->id;
+        $tasks = Task::onlyTrashed()->where('tasklist_id', $tasklist_id)->get();
+
+        return view('archives')->with(compact('tasks'));
+    }
+
     public function getCompletedTasklist(){
         $tasklist_id = Auth::user()->tasklist->id;
         $completedTasks = Task::where('completed', 1)->where('tasklist_id', $tasklist_id)->get();
@@ -57,7 +64,6 @@ class TasklistController extends Controller
 
         $task = Task::find($request->task['id']);
         $return = ['status' => 'error', 'task' => $task->task];
-        //dd($return);
         if ($request->task['task'] != null){
             $task->task = $request->task['task'];
             $task->save();
