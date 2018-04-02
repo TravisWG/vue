@@ -39,7 +39,7 @@ class TasklistController extends Controller
         $tasklist_id = Auth::user()->tasklist->id;
         $completedTasks = Task::where('completed', 1)->where('tasklist_id', $tasklist_id)->get();
         foreach($completedTasks as $task){
-            $task->completed_at = $task->formatCompletedAtDate();
+            $task->completed_at = $task->formatDate($task->completed_at);
         }
         return $completedTasks->toArray();
     }
