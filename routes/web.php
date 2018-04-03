@@ -28,3 +28,6 @@ Route::post('tasklist/addTask', 'TasklistController@addNewTask');
 Route::post('tasklist/editTask', 'TasklistController@editTask');
 Route::post('tasklist/removeTask', 'TasklistController@removeTask');
 Route::post('tasklist/toggleStatus', 'TasklistController@toggleTaskCompletionStatus');
+
+Route::post('tasklist/startTimer', 'TasklistController@startTimer');
+Route::post('tasklist/stopTimer', 'TasklistController@stopTimer');

@@ -54,3 +54,27 @@
 	text-align: center;
 	margin-top: 5px;
 }
+
+button.start-timer {
+	box-shadow: 2px 2px 2px #0dc10c;
+	color: ;
+}
+
+button.stop-timer {
+	box-shadow: 2px 2px 2px #d80e0e;
+}
+
+button.start-timer:hover {
+	box-shadow: 3px 3px 5px #0dc10c;
+}
+
+button.stop-timer:hover {
+	box-shadow: 3px 3px 5px #d80e0e;
+}
+button.start-timer:hover i{
+	color: #0dc10c;
+}
+
+button.stop-timer:hover i{
+	color: #d80e0e;
+}

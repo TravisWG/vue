@@ -78,6 +78,12 @@
                                                         <button v-on:click="removeTask(key)">
                                                             <i class="fas fa-times"></i> Remove
                                                         </button>
+                                                        <button v-on:click="startTimer(key)" v-show="!task.timer_active" class="start-timer">
+                                                            <i class="fas fa-stopwatch"></i> Start Timer
+                                                        </button>
+                                                        <button v-on:click="stopTimer(key)" v-show="task.timer_active" class="stop-timer">
+                                                            <i class="fas fa-stopwatch"></i> Stop Timer
+                                                        </button>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -107,6 +113,9 @@
                                                 <div class="col-md-10 col-md-offset-2">
                                                     <div class="small completion-time">
                                                         Date completed: @{{ task.completed_at }}
+                                                        <div v-show="task.work_duration != 0">
+                                                            Time working: @{{ secondsToTimeStringConversion(task) }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -52,7 +52,9 @@ class TasklistController extends Controller
                 'task' => $request->task,
                 'tasklist_id' => $tasklistId,
                 'completed' => false,
-                'edit' => false
+                'edit' => false,
+                'timer_active' => false,
+                'work_duration' => 0
             ]);
             $return = $task;
         }
@@ -90,6 +92,30 @@ class TasklistController extends Controller
             $task->completed_at = Carbon::now();
             $task->save();
             $return = ['status' => 'success'];
+        }
+        return $return;
+    }
+
+    public function startTimer(Request $request) {
+        $return = ['status' => 'error'];
+        $task = Task::where('id', $request->task['id'])->first();
+        if($task && $this->checkTaskOwnership($task)){
+            $task->timer_active = true;
+            $task->timer_start = Carbon::now();
+            $task->save();
+            $return = ['status' => 'success'];
+        }
+        return $return;
+    }
+
+    public function stopTimer(Request $request) {
+        $return = ['status' => 'error'];
+        $task = Task::where('id', $request->task['id'])->first();
+        if($task && $this->checkTaskOwnership($task)){
+            $task->timer_active = false;
+            $task->work_duration = $task->calculateWorkDuration();
+            $task->save();
+            $return = ['status' => 'success', 'task' => $task];
         }
         return $return;
     }

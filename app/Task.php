@@ -18,7 +18,10 @@ class Task extends Model
         'completed',
         'task',
         'tasklist_id',
-        'edit'
+        'edit',
+        'timer_start',
+        'timer_active',
+        'work_duration'
     ];
 
     public function tasklist() {
@@ -27,5 +30,13 @@ class Task extends Model
 
     public function formatDate($date){
         return Carbon::parse($date)->format('m/d/Y h:i:s A');
+    }
+
+    public function calculateWorkDuration() {
+        $start = Carbon::parse($this->timer_start);
+        $end = Carbon::now();
+        $sessionDuration = $start->diffInSeconds($end);
+        $totalDuration = $this->work_duration + $sessionDuration;
+        return $totalDuration;
     }
 }

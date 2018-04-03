@@ -57,6 +57,36 @@ var tasklist = new Vue({
                 });
         },
 
+        startTimer: function(key) {
+            var self = this;
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            axios.post('/tasklist/startTimer', {
+                    task: self.tasks[key]
+                })
+                .then(function(response) {
+                    self.tasks[key].timer_active = 1;        
+                })
+                .catch(function(error) {
+                    console.log("Error starting timer")
+                });
+        },
+
+        stopTimer: function(key) {
+            var self = this;
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            axios.post('/tasklist/stopTimer', {
+                    task: self.tasks[key]
+                })
+                .then(function(response) {
+                    self.tasks[key].timer_active = 0; 
+                    self.tasks[key].work_duration = reponse.data.task.work_duration
+                    self.tasks[key].work_duration_string =  self.secondsToTimeStringConversion(self.tasks[key]);      
+                })
+                .catch(function(error) {
+                    console.log("Error stopping timer")
+                });
+        },
+
         removeTask: function(key) {
             var self = this;
             axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -111,6 +141,9 @@ var tasklist = new Vue({
             if(task.edit == true){
                 this.saveEditTask(key);
             }
+            if(task.timer_active == true) {
+                this.stopTimer(key);
+            }
             task.key = key;
             task.completed_at = this.formatTimeString();
 
@@ -139,6 +172,25 @@ var tasklist = new Vue({
                 ' ' + hour + ':' + date.getMinutes() + ':' + date.getSeconds() + ' ' + ampm;
 
             return dateString;
+        },
+
+        secondsToTimeStringConversion: function(task) {
+            var task = task
+            console.log(typeof task.work_duration);
+            if(typeof task.work_duration == 'string'){
+                task.work_duration = parseInt(task.work_duration);
+            }
+            var totalSeconds = task.work_duration;
+            
+            hours = Math.floor(totalSeconds / 3600);
+            totalSeconds %= 3600;
+            minutes = Math.floor(totalSeconds / 60);
+            seconds = totalSeconds % 60;
+
+            var timeString = hours + ' hours, ' + minutes + ' minutes, ' + seconds + ' seconds';
+            console.log(timeString);
+            return timeString;
+
         }
     }
 })
