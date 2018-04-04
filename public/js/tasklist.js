@@ -1,8 +1,7 @@
 var tasklist = new Vue({
     el: "#tasklist",
     data: {
-        tasks: [],
-        completedTasks: []
+        tasks: []
     },
     mounted: function() {
         this.fetchData();
@@ -10,13 +9,9 @@ var tasklist = new Vue({
     methods: {
         fetchData: function() {
             var self = this;
-            axios.get('/tasklist/fetch/incomplete')
+            axios.get('/tasklist/fetch')
                 .then(response => {
                     self.tasks = response.data;
-                });
-            axios.get('/tasklist/fetch/completed')
-                .then(response => {
-                    self.completedTasks = response.data;
                 });
         },
 
@@ -37,125 +32,86 @@ var tasklist = new Vue({
                 });
         },
 
-        toggleEditTask: function(key){
-            var task = this.tasks[key];
+        toggleEditTask: function(task){
             task.edit = task.edit ? false : true;
         },
 
-        saveEditTask: function(key) {
+        saveEditTask: function(task) {
             var self = this;
-            self.toggleEditTask(key);
+            self.toggleEditTask(task);
             axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             axios.post('/tasklist/editTask', {
-                    task: self.tasks[key]
+                    task: task
                 })
                 .then(function(response) {
-                    self.tasks[key].task = response.data.task;      
+                    task.task = response.data.task.task;      
                 })
                 .catch(function(error) {
                     console.log("There was an error adding the new task")
                 });
         },
 
-        startTimer: function(key) {
+        startTimer: function(task) {
             var self = this;
             axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             axios.post('/tasklist/startTimer', {
-                    task: self.tasks[key]
+                    task: task
                 })
                 .then(function(response) {
-                    self.tasks[key].timer_active = 1;        
+                    task.timer_active = response.data.task.timer_active;        
                 })
                 .catch(function(error) {
                     console.log("Error starting timer")
                 });
         },
 
-        stopTimer: function(key) {
+        stopTimer: function(task) {
             var self = this;
             axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             axios.post('/tasklist/stopTimer', {
-                    task: self.tasks[key]
+                    task: task
                 })
                 .then(function(response) {
-                    self.tasks[key].timer_active = 0; 
-                    self.tasks[key].work_duration = response.data.task.work_duration
-                    self.tasks[key].work_duration_string =  self.secondsToTimeStringConversion(self.tasks[key]);      
+                    task.timer_active = response.data.task.timer_active; 
+                    task.work_duration = response.data.task.work_duration;      
                 })
                 .catch(function(error) {
                     console.log("Error stopping timer")
                 });
         },
 
-        removeTask: function(key) {
+        removeTask: function(task) {
             var self = this;
             axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             axios.post('/tasklist/removeTask', {
-                    task: self.tasks[key]
+                    task: task
                 })
                 .then(function(response) {
-                    self.tasks.splice(key, 1);
+                    task.deleted_at = response.data.task.deleted_at;
                 })
                 .catch(function(error) {
                     console.log("Error removing task")
                 });
         },
 
-        removeCompletedTask: function(key) {
+        toggleStatus: function(task) {
             var self = this;
-            axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            axios.post('/tasklist/removeTask', {
-                    task: self.completedTasks[key]
-                })
-                .then(function(response) {
-                    self.completedTasks.splice(key, 1);
-                })
-                .catch(function(error) {
-                    console.log("Error removing task");
-                });
-        },
-
-        toggleStatus: function(task, status) {
-            var self = this;
+            if(task.edit) {
+                self.saveEditTask(task);
+            }
+            if(task.timer_active){
+                self.stopTimer(task);
+            }
             axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             axios.post('/tasklist/toggleStatus', {
                     task: task
                 })
                 .then(function(response) {
-                    if (status == "completed") {
-                        self.completedTasks.push(task);
-                        self.tasks.splice(task.key, 1);
-                    }
-                    if (status == "incomplete") {
-                        self.tasks.push(task);
-                        self.completedTasks.splice(task.key, 1);
-                    }
+                    task.completed = response.data.task.completed;                    
                 })
                 .catch(function(error) {
                     console.log("Unable to toggle status");
                 });
-        },
-
-        moveToCompletedTasks: function(key) {
-            var task = this.tasks[key];
-            if(task.edit == true){
-                this.saveEditTask(key);
-            }
-            if(task.timer_active == true) {
-                this.stopTimer(key);
-            }
-            task.key = key;
-            task.completed_at = this.formatTimeString();
-
-            var status = "completed";
-            var toggle = this.toggleStatus(task, status);
-        },
-
-        unmarkCompletedTasks: function(key) {
-            var task = this.completedTasks[key];
-            task.key = key;
-            var status = "incomplete";
-            var toggle = this.toggleStatus(task, status);
         },
 
         formatTimeString: function() {
@@ -176,7 +132,6 @@ var tasklist = new Vue({
 
         secondsToTimeStringConversion: function(task) {
             var task = task
-            console.log(typeof task.work_duration);
             if(typeof task.work_duration == 'string'){
                 task.work_duration = parseInt(task.work_duration);
             }
@@ -188,7 +143,6 @@ var tasklist = new Vue({
             seconds = totalSeconds % 60;
 
             var timeString = hours + ' hours, ' + minutes + ' minutes, ' + seconds + ' seconds';
-            console.log(timeString);
             return timeString;
 
         }

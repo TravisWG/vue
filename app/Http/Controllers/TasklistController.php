@@ -23,7 +23,7 @@ class TasklistController extends Controller
 
     public function getTasklist(){        
         $tasklist_id = Auth::user()->tasklist->id;
-        $tasks = Task::where('completed', 0)->where('tasklist_id', $tasklist_id)->get()->toArray();
+        $tasks = Task::where('tasklist_id', $tasklist_id)->get()->toArray();
 
         return $tasks;
     }
@@ -33,15 +33,6 @@ class TasklistController extends Controller
         $tasks = Task::onlyTrashed()->where('tasklist_id', $tasklist_id)->get();
 
         return view('archives')->with(compact('tasks'));
-    }
-
-    public function getCompletedTasklist(){
-        $tasklist_id = Auth::user()->tasklist->id;
-        $completedTasks = Task::where('completed', 1)->where('tasklist_id', $tasklist_id)->get();
-        foreach($completedTasks as $task){
-            $task->completed_at = $task->formatDate($task->completed_at);
-        }
-        return $completedTasks->toArray();
     }
 
     public function addNewTask(Request $request) {
@@ -69,7 +60,7 @@ class TasklistController extends Controller
         if ($request->task['task'] != null){
             $task->task = $request->task['task'];
             $task->save();
-            $return = ['status' => 'success', 'task' => $task->task];
+            $return = ['status' => 'success', 'task' => $task];
         }
         return $return;
     }
@@ -79,7 +70,7 @@ class TasklistController extends Controller
         $task = Task::where('id', $request->task['id'])->first();
         if($task && $this->checkTaskOwnership($task)){
             $task->delete();
-            $return = ['status' => 'success'];
+            $return = ['status' => 'success', 'task' => $task];
         }
         return $return;
     }
@@ -91,7 +82,7 @@ class TasklistController extends Controller
             $task->completed = !$task->completed;
             $task->completed_at = Carbon::now();
             $task->save();
-            $return = ['status' => 'success'];
+            $return = ['status' => 'success', 'task' => $task];
         }
         return $return;
     }
@@ -103,7 +94,7 @@ class TasklistController extends Controller
             $task->timer_active = true;
             $task->timer_start = Carbon::now();
             $task->save();
-            $return = ['status' => 'success'];
+            $return = ['status' => 'success', 'task' => $task];
         }
         return $return;
     }
