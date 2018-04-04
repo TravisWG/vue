@@ -79,7 +79,7 @@ var tasklist = new Vue({
                 })
                 .then(function(response) {
                     self.tasks[key].timer_active = 0; 
-                    self.tasks[key].work_duration = reponse.data.task.work_duration
+                    self.tasks[key].work_duration = response.data.task.work_duration
                     self.tasks[key].work_duration_string =  self.secondsToTimeStringConversion(self.tasks[key]);      
                 })
                 .catch(function(error) {
