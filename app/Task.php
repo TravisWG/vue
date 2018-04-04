@@ -28,15 +28,19 @@ class Task extends Model
     	return $this->belongsTo('App\Tasklist');
     }
 
+    public function timelogs() {
+        return $this->hasMany('App\Timelog');
+    }
+
     public function formatDate($date){
         return Carbon::parse($date)->format('m/d/Y h:i:s A');
     }
 
     public function calculateWorkDuration() {
-        $start = Carbon::parse($this->timer_start);
-        $end = Carbon::now();
-        $sessionDuration = $start->diffInSeconds($end);
-        $totalDuration = $this->work_duration + $sessionDuration;
-        return $totalDuration;
+        $totalTime = 0;
+        foreach($this->timelogs as $timelog){
+            $totalTime = $totalTime + $timelog->total_time;
+        }
+        return $totalTime;
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Task;
 use App\Tasklist;
+use App\Timelog;
 use Carbon\Carbon;
 
 class TasklistController extends Controller
@@ -91,6 +92,12 @@ class TasklistController extends Controller
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
         if($task && $this->checkTaskOwnership($task)){
+            
+            $timelog = Timelog::create([
+                'task_id' => $task->id,
+                'start_time' => Carbon::now()
+            ]);
+
             $task->timer_active = true;
             $task->timer_start = Carbon::now();
             $task->save();
@@ -103,6 +110,9 @@ class TasklistController extends Controller
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
         if($task && $this->checkTaskOwnership($task)){
+            $timelog = Timelog::where('task_id', $task->id)->where('active', true)->firstOrFail();
+            $timelog->completeTimelog();
+
             $task->timer_active = false;
             $task->work_duration = $task->calculateWorkDuration();
             $task->save();
