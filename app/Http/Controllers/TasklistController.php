@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Auth;
 use App\Task;
 use App\Tasklist;
 use App\Timelog;
+use Auth;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class TasklistController extends Controller
 {
@@ -58,7 +58,7 @@ class TasklistController extends Controller
 
         $task = Task::find($request->task['id']);
         $return = ['status' => 'error', 'task' => $task->task];
-        if ($request->task['task'] != null){
+        if ($request->task['task'] != null && $task->checkOwnership()){
             $task->task = $request->task['task'];
             $task->save();
             $return = ['status' => 'success', 'task' => $task];
@@ -69,7 +69,7 @@ class TasklistController extends Controller
     public function removeTask(Request $request) {
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
-        if($task && $this->checkTaskOwnership($task)){
+        if($task && $task->checkOwnership()){
             $task->delete();
             $return = ['status' => 'success', 'task' => $task];
         }
@@ -79,7 +79,7 @@ class TasklistController extends Controller
     public function toggleTaskCompletionStatus(Request $request) {
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
-        if($task && $this->checkTaskOwnership($task)){
+        if($task && $task->checkOwnership()){
             $task->completed = !$task->completed;
             $task->completed_at = Carbon::now();
             $task->save();
@@ -91,7 +91,7 @@ class TasklistController extends Controller
     public function startTimer(Request $request) {
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
-        if($task && $this->checkTaskOwnership($task)){
+        if($task && $task->checkOwnership()){
             
             $timelog = Timelog::create([
                 'task_id' => $task->id,
@@ -109,7 +109,7 @@ class TasklistController extends Controller
     public function stopTimer(Request $request) {
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
-        if($task && $this->checkTaskOwnership($task)){
+        if($task && $task->checkOwnership()){
             $timelog = Timelog::where('task_id', $task->id)->where('active', true)->firstOrFail();
             $timelog->completeTimelog();
 
@@ -121,10 +121,4 @@ class TasklistController extends Controller
         return $return;
     }
 
-    public function checkTaskOwnership($task) {
-        if($task->tasklist->user == Auth::user()) {
-            return true;
-        }
-        return false;
-    }
 }

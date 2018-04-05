@@ -2,8 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Auth;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
@@ -42,5 +43,12 @@ class Task extends Model
             $totalTime = $totalTime + $timelog->total_time;
         }
         return $totalTime;
+    }
+
+    public function checkOwnership() {
+        if($this->tasklist->user == Auth::user()) {
+            return true;
+        }
+        return false;
     }
 }
