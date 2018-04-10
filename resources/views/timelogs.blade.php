@@ -58,7 +58,7 @@
                     <div class="col-md-8 col-md-offset-2">
                         <div class="content">
                             <div class="row">
-                                <h1> Timelogs</h1>
+                                <h1> Timelog for task: {{ $task->task }}</h1>
                                 <table class='col-md-12'>
                                     <thead>
                                         <tr>
@@ -70,16 +70,25 @@
                                     <tbody>
                                             @foreach($task->timelogs as $timelog)
                                             <tr>
-                                                <td>{{ $timelog->start_time}}</td>
+                                                <td>{{ $timelog->formattedStartDate() }}</td>
                                                 @if($timelog->active)
                                                 <td>Timer Still Active</td>
                                                 @else
-                                                <td>{{ $timelog->end_time }}</td>
+                                                <td>{{ $timelog->formattedEndDate() }}</td>
                                                 @endif
                                                 <td>{{ $timelog->total_time }}</td>
                                             </tr>
                                             @endforeach
                                     </tbody>
+                                    <thead>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Total Time for Task</th>
+                                    </thead>
+                                    <tbody>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{ $task->secondsToHrsMinSecString() }}</td>
                                 </table>
                             </div>
                         </div>

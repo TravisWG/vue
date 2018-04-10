@@ -45,6 +45,18 @@ class Task extends Model
         return $totalTime;
     }
 
+    public function secondsToHrsMinSecString() {
+        $totalSeconds = $this->calculateWorkDuration();
+
+        $hours = floor($totalSeconds / 3600);
+        $totalSeconds = $totalSeconds % 3600;
+        $minutes = floor($totalSeconds / 60);
+        $seconds = $totalSeconds % 60;
+
+        $HrMinSecString = $hours . ' hrs, ' . $minutes . ' min ' . $seconds . ' sec';
+        return $HrMinSecString; 
+    }
+
     public function checkOwnership() {
         if($this->tasklist->user == Auth::user()) {
             return true;

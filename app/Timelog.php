@@ -37,5 +37,19 @@ class Timelog extends Model
     	return $this->start_time->diffInSeconds($this->end_time);
     }
 
+    public function formattedStartDate(){
+        return $this->formatDate($this->start_time);
+    }
 
+    public function formattedEndDate(){
+        if($this->end_time != null){
+            return $this->formatDate($this->end_time);
+        }
+
+        return null;
+    }
+
+    public function formatDate($date){
+        return $date->format('m/d/Y h:i:s A');
+    }
 }
