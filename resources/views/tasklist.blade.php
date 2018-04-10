@@ -85,6 +85,9 @@
                                                             <i class="fas fa-stopwatch"></i> Stop Timer
                                                         </button>
                                                     </div>
+                                                </div>
+                                                <div class="col-md-12 small">
+                                                            <a v-on:click="viewTimelogs(task)">View Timelogs</a>
                                                 </div> 
                                             </div>
                                         </div>
@@ -130,7 +133,6 @@
             </div>
         </div>
         <!-- Scripts -->
-        <!-- <script src="{{ asset('js/app.js') }}"></script> -->
         <script src="/js/vue.js"></script>
         <script src="/js/tasklist.js"></script>
     </body>

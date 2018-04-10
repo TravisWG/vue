@@ -30,3 +30,5 @@ Route::post('tasklist/toggleStatus', 'TasklistController@toggleTaskCompletionSta
 
 Route::post('tasklist/startTimer', 'TasklistController@startTimer');
 Route::post('tasklist/stopTimer', 'TasklistController@stopTimer');
+
+Route::get('task/{id}/timelogs', 'TaskController@viewTimelogs')->name('viewTimelogs');

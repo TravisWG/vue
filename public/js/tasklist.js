@@ -32,6 +32,10 @@ var tasklist = new Vue({
                 });
         },
 
+        viewTimelogs: function(task) {
+            window.location.href = '/task/' + task.id + '/timelogs';
+        },
+
         toggleEditTask: function(task){
             task.edit = task.edit ? false : true;
         },
