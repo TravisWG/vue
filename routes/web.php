@@ -32,3 +32,6 @@ Route::post('tasklist/startTimer', 'TasklistController@startTimer');
 Route::post('tasklist/stopTimer', 'TasklistController@stopTimer');
 
 Route::get('task/{id}/timelogs', 'TaskController@viewTimelogs')->name('viewTimelogs');
+
+Route::get('colleagues', 'ColleagueController@index')->name('colleagues');
+Route::post('colleagues/search', 'ColleagueController@search');

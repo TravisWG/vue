@@ -36,13 +36,19 @@
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right"> 
                                     <li>
-                                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                        <a href="notifications"><i class="far fa-bell fa-lg"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('colleagues') }}">Colleagues</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('task-list') }}">My Tasklist</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('archived-tasks') }}">Task History</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                     </li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
