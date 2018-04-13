@@ -45,8 +45,8 @@ class Task extends Model
         return $totalTime;
     }
 
-    public function secondsToHrsMinSecString() {
-        $totalSeconds = $this->calculateWorkDuration();
+    public function secondsToHrsMinSecString($seconds) {
+        $totalSeconds = $seconds;
 
         $hours = floor($totalSeconds / 3600);
         $totalSeconds = $totalSeconds % 3600;

@@ -25,7 +25,7 @@
                                                 @else
                                                 <td>{{ $timelog->formattedEndDate() }}</td>
                                                 @endif
-                                                <td>{{ $timelog->total_time }}</td>
+                                                <td>{{ $timelog->task->secondsToHrsMinSecString($timelog->calculateSingleLogTime()) }}</td>
                                             </tr>
                                             @endforeach
                                     </tbody>
@@ -37,7 +37,7 @@
                                     <tbody>
                                         <td></td>
                                         <td></td>
-                                        <td>{{ $task->secondsToHrsMinSecString() }}</td>
+                                        <td>{{ $task->secondsToHrsMinSecString($task->calculateWorkDuration()) }}</td>
                                     </tbody>
                                 </table>
                             </div>
@@ -45,7 +45,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </body>
 </html>
 @endsection
