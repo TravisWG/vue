@@ -29,13 +29,15 @@
                                 <div v-show="colleagues || errorMessage" class="row">
                                     <div class="col-md-6" v-for="colleague in colleagues">
                                         <div class="list-item">
-                                            <div class="col-md-6 list-text">
+                                            <div class="col-md-7 list-text">
                                                 @{{ colleague.name }}<br>
-                                                @{{ colleague.email }}
+                                                <div class="small">
+                                                    @{{ colleague.email }}
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="list-buttons">
-                                                    <button>Add Colleague</button>
+                                                    <button  v-on:click="addColleague(colleague.id)">Add Colleague</button>
                                                 </div>
                                             </div>
                                         </div>

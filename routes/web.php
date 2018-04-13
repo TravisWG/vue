@@ -35,3 +35,4 @@ Route::get('task/{id}/timelogs', 'TaskController@viewTimelogs')->name('viewTimel
 
 Route::get('colleagues', 'ColleagueController@index')->name('colleagues');
 Route::post('colleagues/search', 'ColleagueController@search');
+Route::post('colleagues/requestAdd', 'ColleagueController@requestAdd');

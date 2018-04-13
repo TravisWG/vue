@@ -9,8 +9,8 @@ var colleague = new Vue({
     methods: {
         search: function() {
             this.inputError = false;
-            this.emptySearch = false;
             this.colleagues = null;
+            this.errorMessage = false
 
             var self = this;
                 nameValue = document.getElementById("search-name").value.trim();
@@ -24,7 +24,6 @@ var colleague = new Vue({
                     .then(function(response) {
                         
                         if(response.data.users){
-                            console.log(response.data);
                             self.colleagues = response.data.users;
                         } else{
                             self.errorMessage = response.data.message;
@@ -32,12 +31,24 @@ var colleague = new Vue({
 
                     })
                     .catch(function(error) {
-                        console.log("Error retrieving search results");
+                        self.errorMessage = "Error retrieving search results";
                     });
             }
             else{
                 self.inputError = true;
             }
+        },
+
+        addColleague: function(id) {
+            var self = this;
+            axios.post('/colleagues/requestAdd', {
+                        id: id,
+                    })
+                    .then(function(response) {
+                    })
+                    .catch(function(error) {
+                    });
+
         }
     }
 })

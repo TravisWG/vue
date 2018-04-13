@@ -13,7 +13,7 @@ class CreateColleagueRequestTable extends Migration
      */
     public function up()
     {
-        Schema::create('colleague_request', function (Blueprint $table) {
+        Schema::create('colleague_requests', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('colleague_id');
@@ -31,6 +31,6 @@ class CreateColleagueRequestTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('colleague_request');
+        Schema::dropIfExists('colleague_requests');
     }
 }
