@@ -36,7 +36,7 @@
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right"> 
                                     <li>
-                                        <a href="notifications"><i class="far fa-bell fa-lg"></i></a>
+                                        <a href="notifications"><i class="far fa-bell fa-lg">{{ $notification_count }}</i></a>
                                     </li>
                                     <li>
                                         <a href="{{ route('colleagues') }}">Colleagues</a>

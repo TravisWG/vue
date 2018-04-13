@@ -14,6 +14,7 @@ class CreateColleagueRequestTable extends Migration
     public function up()
     {
         Schema::create('colleague_requests', function (Blueprint $table) {
+            $table->softDeletes();
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('colleague_id');
