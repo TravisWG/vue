@@ -37,9 +37,9 @@
                                 <ul class="nav navbar-nav navbar-right"> 
                                     <li>
                                     	@if($notification_count)
-                                        	<a href="notifications"> <span class="active-notifications">{{ $notification_count }}</span><i class="far fa-bell fa-lg"></i></a>
+                                        	<a href="{{ route('notifications') }}"> <span class="active-notifications">{{ $notification_count }}</span><i class="far fa-bell fa-lg"></i></a>
                                         @else
-                                        	<a href="notifications">{{ $notification_count }}<i class="far fa-bell fa-lg"></i></a>
+                                        	<a href="{{ route('notifications') }}">{{ $notification_count }}<i class="far fa-bell fa-lg"></i></a>
                                         @endif
                                     </li>
                                     <li>

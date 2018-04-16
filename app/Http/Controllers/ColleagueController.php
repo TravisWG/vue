@@ -45,4 +45,21 @@ class ColleagueController extends Controller
 
         return ["status" => "success"];
     }
+
+    public function getColleagueRequests(){
+        $colleagueRequests = ColleagueRequest::with('sendingUser')
+            ->where('colleague_id', Auth::user()->id)
+            ->where('accepted', false) 
+            ->where('rejected', false) 
+            ->where('blocked', false) 
+            ->get();
+
+        return $colleagueRequests;
+    }
+
+    public function postRequestResponse(Request $request) {
+        $colleagueRequest = ColleagueRequest::find($request->id);
+
+        
+    }
 }

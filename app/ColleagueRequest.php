@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\User;
 
 class ColleagueRequest extends Model
 {
@@ -18,4 +19,12 @@ class ColleagueRequest extends Model
         'rejected',
         'blocked',
     ];
+
+    public function sendingUser() {
+    	return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
+    public function receivingUser() {
+    	return $this->hasOne('App\User', 'id', 'colleague_id');
+    }
 }
