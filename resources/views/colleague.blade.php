@@ -6,6 +6,27 @@
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
                         <div class="content">
+                            <div id="colleagues">
+                                <div class="row">
+                                    <h1>Your Colleagues</h1>
+                                    <div v-show="colleagues" class="row">
+                                        <div class="col-md-6" v-for="colleague in colleagues">
+                                            <div class="list-item">
+                                                <div class="col-md-7 list-text">
+                                                    @{{ colleague.colleague_user.name }}<br>
+                                                    <div class="small">
+                                                        @{{ colleague.colleague_user.email  }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="list-buttons">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>               
+                                    </div>
+                                </div>
+                            </div>
                             <div id="colleague-search">
                                 <div class="row">
                                     <h1> Search for Colleagues</h1>
@@ -13,17 +34,16 @@
                                         Find colleagues by name or email address:
                                     </div>
                                     <div class="col-md-6">
-                                            <div class="">
-                                                <div v-show="inputError" class="errors">
-                                                    You must enter search parameters.
-                                                </div>
-                                                <label>Name</label>
-                                                <input type="text" id="search-name" name="search"><br>
-                                                <label>Email</label>
-                                                <input type="text" id="search-email" name="search"><br>
-                                                <button v-on:click="search()" type="submit">Search</button>
+                                        <div class="">
+                                            <div v-show="inputError" class="errors">
+                                                You must enter search parameters.
                                             </div>
-                                        </form>
+                                            <label>Name</label>
+                                            <input type="text" id="search-name" name="search"><br>
+                                            <label>Email</label>
+                                            <input type="text" id="search-email" name="search"><br>
+                                            <button v-on:click="search()" type="submit">Search</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div v-show="colleagues || errorMessage" class="row">

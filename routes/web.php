@@ -37,6 +37,7 @@ Route::get('colleagues', 'ColleagueController@index')->name('colleagues');
 Route::post('colleagues/search', 'ColleagueController@search');
 Route::post('colleagues/requestAdd', 'ColleagueController@requestAdd');
 Route::post('colleagues/requestResponse', 'ColleagueController@postRequestResponse');
+Route::get('colleagues/getColleagues', 'ColleagueController@getColleagues');
 Route::get('colleagues/getColleagueRequests', 'ColleagueController@getColleagueRequests');
 
 Route::get('notifications', 'NotificationController@index')->name('notifications');

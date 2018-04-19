@@ -1,4 +1,23 @@
 var colleague = new Vue({
+    el: "#colleagues",
+    data: {
+        colleagues: null,
+    },
+    mounted: function() {
+        this.fetchData();
+    },
+    methods: {
+        fetchData: function() {
+            var self = this;
+            axios.get('/colleagues/getColleagues')
+                .then(response => {
+                    self.colleagues = response.data;
+                });
+        }, 
+    }
+})
+
+var colleagueSearch = new Vue({
     el: "#colleague-search",
     data: {
         colleagues: null,

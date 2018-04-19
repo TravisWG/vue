@@ -29,7 +29,7 @@
                                                         Deny Request
                                                     </button>
                                                     <button v-on:click="requestReply(colleagueRequest, 'block')" class="stop-timer">
-                                                        <i class="fas fa-stopwatch"></i> 
+                                                        <i class="fas fa-ban"></i> 
                                                         Block User
                                                     </button>
                                                 </div>
