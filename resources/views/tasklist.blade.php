@@ -64,7 +64,9 @@
                                         </div>
                                         <div class="col-md-10 col-md-offset-2">
                                             <div class="small completion-time">
-                                                Date completed: @{{ task.completed_at }}
+                                                <div v-show="task.work_completed_at != 0">
+                                                        Date completed: @{{ task.completed_at }}
+                                                </div>
                                                 <div v-show="task.work_duration != 0">
                                                     Time working: @{{ secondsToTimeStringConversion(task) }}
                                                 </div>

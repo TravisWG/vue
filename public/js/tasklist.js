@@ -111,7 +111,8 @@ var tasklist = new Vue({
                     task: task
                 })
                 .then(function(response) {
-                    task.completed = response.data.task.completed;                    
+                    task.completed = response.data.task.completed;
+                    task.completed_at = response.data.task.completed_at;
                 })
                 .catch(function(error) {
                     console.log("Unable to toggle status");

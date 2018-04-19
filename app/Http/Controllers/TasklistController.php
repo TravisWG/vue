@@ -83,6 +83,7 @@ class TasklistController extends Controller
             $task->completed = !$task->completed;
             $task->completed_at = Carbon::now();
             $task->save();
+            $task->completed_at = $task->completed_at->toDateTimeString();
             $return = ['status' => 'success', 'task' => $task];
         }
         return $return;
