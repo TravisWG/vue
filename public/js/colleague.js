@@ -58,16 +58,18 @@ var colleagueSearch = new Vue({
             }
         },
 
-        addColleague: function(id) {
+        addColleague: function(colleague) {
             var self = this;
+            console.log(colleague);
             axios.post('/colleagues/requestAdd', {
-                        id: id,
+                        id: colleague.id,
                     })
                     .then(function(response) {
+                        colleague.requestMessage = "Request sent!";
                     })
                     .catch(function(error) {
-                    });
 
+                    });
         }
     }
 })

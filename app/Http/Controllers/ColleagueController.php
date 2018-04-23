@@ -28,10 +28,42 @@ class ColleagueController extends Controller
                 ->where('id', '!=', Auth::user()->id)
                 ->get();
         }
+
+        $sentColleagueRequests = ColleagueRequest::where('user_id', Auth::user()->id)
+            ->where('accepted', false) 
+            ->where('rejected', false)
+            ->get();
+
+        $receivedColleagueRequests = ColleagueRequest::where('colleague_id', Auth::user()->id)
+            ->where('accepted', false) 
+            ->where('rejected', false)
+            ->get();
     	
         if(count($users) > 0){
-    	   return ["status"=>"success", "users"=> $users];
+            foreach($users as $user){
+                $user->requestMessage = null;
+                
+                if(count($sentColleagueRequests) > 0){
+                    foreach($sentColleagueRequests as $sentColleagueRequest){
+                        if($sentColleagueRequest->colleague_id == $user->id){
+                            $user->requestMessage = 'Request Pending';
+                        }
+                    }
+                }
+                if(count($receivedColleagueRequests) > 0){
+                    foreach($receivedColleagueRequests as $receivedColleagueRequest){
+                        if($receivedColleagueRequest->user_id == $user->id){
+                            $user->requestMessage = 'Colleague has requested to add you.';
+                        }
+                    }
+                }
+            }    	   
+        
+            return ["status"=>"success", "users"=> $users];
+
         }
+
+
 
         return ["status"=>"failure", "message"=> "Query returned no results."];
     }

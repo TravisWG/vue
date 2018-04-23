@@ -56,8 +56,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
-                                                <div class="list-buttons">
-                                                    <button  v-on:click="addColleague(colleague.id)">Add Colleague</button>
+                                                <div class="list-buttons" v-show="colleague.requestMessage == null">
+                                                    <button  v-on:click="addColleague(colleague)">Add Colleague</button>
+                                                </div>
+                                                <div class="list-message" v-show="colleague.requestMessage != null">                                                    
+                                                    @{{ colleague.requestMessage }}
                                                 </div>
                                             </div>
                                         </div>
