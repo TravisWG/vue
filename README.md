@@ -1,3 +1,5 @@
+<p>This project started as a way to learn Vue.js.  It was just going to be a simple client-side responsive tasklist. I decided later to expand on it to incorporate ajax requests to gather data from a database instead of just having data within the javascript files.</p>
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
