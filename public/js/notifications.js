@@ -1,7 +1,7 @@
 var colleagueNotifications = new Vue({
     el: "#colleague-notifications",
     data: {
-        colleagueRequests: []
+        colleagueRequests: null,
     },
     mounted: function() {
         this.fetchData();
@@ -15,12 +15,23 @@ var colleagueNotifications = new Vue({
                 });
         },
 
-        requestReply: function(colleagueRequest, response){
+        requestReply: function(colleagueRequest, reply){
+            console.log(colleagueRequest);
             axios.post('/colleagues/requestResponse', {
                         id: colleagueRequest.id,
-                        response: response,
+                        reply: reply,
                     })
                     .then(function(response) {
+                        if (response.data.status = 'success'){
+                            colleagueRequest.deleted_at = true;
+                            if (reply == 'accept'){
+                                colleagueRequest.accepted = true;
+                            } else if (reply == 'deny'){
+                                colleagueRequest.rejected = true;
+                            } else if (reply == 'block'){
+                                colleagueRequest.blocked = true;
+                            }
+                        }
                     })
                     .catch(function(error) {
                     });

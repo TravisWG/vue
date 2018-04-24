@@ -42,7 +42,7 @@ class ColleagueController extends Controller
         if(count($users) > 0){
             foreach($users as $user){
                 $user->requestMessage = null;
-                
+
                 if(count($sentColleagueRequests) > 0){
                     foreach($sentColleagueRequests as $sentColleagueRequest){
                         if($sentColleagueRequest->colleague_id == $user->id){
@@ -62,8 +62,6 @@ class ColleagueController extends Controller
             return ["status"=>"success", "users"=> $users];
 
         }
-
-
 
         return ["status"=>"failure", "message"=> "Query returned no results."];
     }
@@ -102,30 +100,30 @@ class ColleagueController extends Controller
     public function postRequestResponse(Request $request) {
         $colleagueRequest = ColleagueRequest::find($request->id);
 
-        if($request->response == 'accept'){
+        if($request->reply == 'accept'){
             $colleagueRequest->accepted = true;
 
             $colleagueRelationship = Colleague::firstOrcreate([
-                "user_id" => $colleagueRequest->sendingUser()->id,
-                "colleague_id" => $colleagueRequest->receivingUser()->id,            
+                "user_id" => $colleagueRequest->sendingUser->id,
+                "colleague_id" => $colleagueRequest->receivingUser->id,            
             ]);
 
             $inverseColleagueRelationship = Colleague::firstOrCreate([
-                "user_id" => $colleagueRequest->receivingUser()->id,
-                "colleague_id" => $colleagueRequest->sendingUser()->id,            
+                "user_id" => $colleagueRequest->receivingUser->id,
+                "colleague_id" => $colleagueRequest->sendingUser->id,            
             ]);
 
-        }else if ($request->response == 'deny') {
+        }else if ($request->reply == 'deny') {
             $colleagueRequest->rejected = true;
-        }else if ($request->response == 'block') {
+        }else if ($request->reply == 'block') {
             $colleagueRequest->blocked = true;
-
             //create a Colleague Relationship for the blocking user
             $colleagueRelationship = Colleague::firstOrcreate([
-                "user_id" => $colleagueRequest->Auth::user()->id,
-                "colleague_id" => $colleagueRequest->sendingUser()->id,
-                "blocked" => true,            
+                "user_id" => Auth::user()->id,
+                "colleague_id" => $colleagueRequest->sendingUser->id,
             ]);
+            $colleagueRelationship->blocked = true;
+            $colleagueRelationship->save();
         } else{
             return["status" => "failure", "message" => "Unknown response value"];
         }

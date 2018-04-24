@@ -18,7 +18,7 @@
                                                     @{{ colleagueRequest.sending_user.email }}
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" v-show="colleagueRequest.deleted_at == null">
                                                 <div class="list-buttons">
                                                     <button v-on:click="requestReply(colleagueRequest, 'accept')">
                                                         <i class="fas fa-check"></i> 
@@ -33,6 +33,15 @@
                                                         Block User
                                                     </button>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6" v-show="colleagueRequest.accepted">
+                                                Colleague request accepted.
+                                            </div>
+                                            <div class="col-md-6" v-show="colleagueRequest.rejected">
+                                                Colleague request denied.
+                                            </div>
+                                            <div class="col-md-6" v-show="colleagueRequest.blocked">
+                                                Colleague blocked.
                                             </div>
                                         </div>
                                     </div>                                    

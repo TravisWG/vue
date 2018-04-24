@@ -60,7 +60,6 @@ var colleagueSearch = new Vue({
 
         addColleague: function(colleague) {
             var self = this;
-            console.log(colleague);
             axios.post('/colleagues/requestAdd', {
                         id: colleague.id,
                     })
