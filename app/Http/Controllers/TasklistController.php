@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SharedTask;
 use App\Task;
 use App\Tasklist;
 use App\Timelog;
@@ -52,6 +53,18 @@ class TasklistController extends Controller
         }
 
         return $return;
+    }
+
+    public function shareTask(Request $request) {
+        $taskId = ($request->taskId);
+        foreach($request->userIds as $userId) {
+            $task = SharedTask::firstOrCreate([
+                'parent_task_id' => $taskId,
+                'user_id' => $userId
+            ]);
+        }
+
+        return ['status' => 'success'];
     }
 
     public function editTask(Request $request) {
@@ -121,5 +134,4 @@ class TasklistController extends Controller
         }
         return $return;
     }
-
 }

@@ -7,11 +7,41 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="content">
                 <div class="row">
-                    <div id="tasklist"> 
+                    <div id="tasklist">
+                        <transition name="modal" v-if="showModal">
+                            <div class="modal-mask">
+                                <div class="modal-wrapper">
+                                    <div class="modal-container">
+                                        <div class="modal-header">
+                                            <slot name="header">
+                                                Share Task with Colleagues
+                                            </slot>
+                                        </div>
+                                        <div class="modal-body">
+                                                <input type="hidden" v-bind:value="modalTaskId">
+                                            <slot name="body" v-for="colleague in colleagues">                                                
+                                                <input type="checkbox" class="colleagueCheckbox" v-bind:value="colleague.colleague_user.id" v-model="checkedIds">
+                                                    @{{ colleague.colleague_user.name }} | <em>@{{ colleague.colleague_user.email}}</em><br>
+                                            </slot>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <slot name="footer">                                                
+                                                <button class="modal-default-button" v-on:click="sendShare">
+                                                    OK
+                                                </button>
+                                                <button class="modal-default-button" v-on:click="closeModal">
+                                                    Cancel
+                                                </button>
+                                            </slot>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </transition> 
                         <div class="col-md-6">
                             <div class="title m-b-md">
                                 <h2>Task List</h2>
-                            </div>                                   
+                            </div>                                  
                             <div class="task-list">                                            
                                 <div class="list-item" v-for="task in tasks" v-show="!task.completed && task.deleted_at == null">                                                
                                     <div class="col-md-6 list-text" v-show="!task.edit" v-on:click="toggleEditTask(task)">
@@ -23,6 +53,9 @@
                                             <button v-on:click="toggleStatus(task)">
                                                 <i class="fas fa-check"></i> 
                                                 Mark Complete
+                                            </button>                                            
+                                            <button v-on:click="shareModal(task)">
+                                                <i class="fas fa-share-square"></i> Share
                                             </button>
                                             <button v-on:click="removeTask(task)">
                                                 <i class="fas fa-times"></i> Remove
@@ -36,7 +69,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 small">
-                                                <a v-on:click="viewTimelogs(task)">View Timelogs</a>
+                                        <a v-on:click="viewTimelogs(task)">View Timelogs</a>
                                     </div> 
                                 </div>
                             </div>

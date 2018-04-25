@@ -77,7 +77,7 @@ class ColleagueController extends Controller
         return ["status" => "success"];
     }
 
-     public function getColleagues(){
+    public function getColleagues(){
         $colleagues = Colleague::where('user_id', Auth::user()->id)
             ->where('blocked', false)
             ->with('colleague_user')

@@ -1,7 +1,12 @@
 var tasklist = new Vue({
     el: "#tasklist",
     data: {
-        tasks: []
+        tasks: [],
+        colleagues: [],
+        showModal: false,
+        modalTaskId: null,
+        checkedIds: [],
+
     },
     mounted: function() {
         this.fetchData();
@@ -149,7 +154,39 @@ var tasklist = new Vue({
 
             var timeString = hours + ' hours, ' + minutes + ' minutes, ' + seconds + ' seconds';
             return timeString;
+        },
 
+        shareModal: function(task) {
+            var self = this;            
+            axios.get('/colleagues/getColleagues')
+                .then(response => {
+                    self.colleagues = response.data;
+                    self.modalTaskId = task.id;
+                    self.showModal = true;
+                });
+        },
+
+        sendShare: function(){
+            var self = this;
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            axios.post('/tasklist/shareTask', {
+                    taskId: self.modalTaskId,
+                    userIds: self.checkedIds,
+                })
+                .then(function(response) {
+                    self.closeModal();
+                })
+                .catch(function(error) {
+                    console.log("Error sharing tasks.");
+                });
+
+        },
+
+        closeModal: function() {
+            this.colleagues = [];
+            this.showModal = false;
+            this.modalTaskId = null;
+            this.checkedIds = [];
         }
     }
 })

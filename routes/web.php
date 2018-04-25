@@ -24,6 +24,7 @@ Route::get('/tasklist/archived', 'TasklistController@getArchivedTasks')->name('a
 Route::get('/tasklist/fetch', 'TasklistController@getTasklist');
 
 Route::post('tasklist/addTask', 'TasklistController@addNewTask');
+Route::post('tasklist/shareTask', 'TasklistController@shareTask');
 Route::post('tasklist/editTask', 'TasklistController@editTask');
 Route::post('tasklist/removeTask', 'TasklistController@removeTask');
 Route::post('tasklist/toggleStatus', 'TasklistController@toggleTaskCompletionStatus');

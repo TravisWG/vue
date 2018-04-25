@@ -17,6 +17,7 @@
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
         <!-- Axios & jQuery -->
         <script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
