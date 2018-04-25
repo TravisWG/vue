@@ -18,13 +18,17 @@
                                                {{ $task->task }}<br>
                                             </div>                                        
                                             <div class="col-md-6 list-subtext">
-                                                    Created: {{ $task->formatDate($task->created_at) }}<br>
-                                                    Completed:
+                                                    <b>Created:</b> {{ $task->formatDate($task->created_at) }}<br>
+                                                    <b>Completed:</b>
                                                     @if ($task->completed)
-                                                        {{ $task->formatDate($task->completed_at) }}
+                                                        {{ $task->formatDate($task->completed_at) }}<br>
                                                     @else
-                                                        Not Completed
+                                                        Not Completed<br>
                                                     @endif 
+                                                    @if($task->deleted_at)
+                                                        <b>Archived:</b> {{ $task->formatDate($task->deleted_at)  }}<br>
+                                                    @endif                                                    
+                                                    <b>Total Time:</b>  {{ $task->secondsToHrsMinSecString($task->totalTimeInSeconds()) }}
                                             </div> 
                                         </div>
                                         @endforeach

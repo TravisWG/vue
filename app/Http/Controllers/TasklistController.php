@@ -31,7 +31,7 @@ class TasklistController extends Controller
 
     public function getArchivedTasks(){        
         $tasklist_id = Auth::user()->tasklist->id;
-        $tasks = Task::onlyTrashed()->where('tasklist_id', $tasklist_id)->get();
+        $tasks = Task::withTrashed()->where('tasklist_id', $tasklist_id)->get();
 
         return view('archives')->with(compact('tasks'));
     }

@@ -57,6 +57,19 @@ class Task extends Model
         return $HrMinSecString; 
     }
 
+    public function currentTimerInSeconds() {
+        if($this->timer_active){
+            return Carbon::now()->diffInSeconds($this->timer_start);
+        }
+        else{
+            return 0;
+        }
+    }
+
+    public function totalTimeInSeconds() {
+        return $this->work_duration + $this->currentTimerInSeconds();
+    }
+
     public function checkOwnership() {
         if($this->tasklist->user == Auth::user()) {
             return true;
