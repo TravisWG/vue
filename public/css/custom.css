@@ -84,3 +84,7 @@ button.stop-timer:hover i{
 	font-weight: bolder;
 	text-align: center;
 }
+
+[v-cloak] {
+	display:none;
+}

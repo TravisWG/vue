@@ -9,7 +9,7 @@
                 
                 <div id="tasklist">
                     <div class="row">
-                        <transition name="modal" v-if="showModal">
+                        <transition v-cloak name="modal" v-if="showModal">
                             <div class="modal-mask">
                                 <div class="modal-wrapper">
                                     <div class="modal-container">
@@ -43,7 +43,7 @@
                             <div class="title m-b-md">
                                 <h2>Task List</h2>
                             </div>                                  
-                            <div class="task-list">                                            
+                            <div v-cloak class="task-list">                                            
                                 <div class="list-item" v-for="task in tasks" v-show="!task.completed && task.deleted_at == null">                                                
                                     <div class="col-md-6 list-text" v-show="!task.edit" v-on:click="toggleEditTask(task)">
                                         @{{ task.task }}
@@ -75,13 +75,13 @@
                                 </div>
                             </div>
                             <br>
-                            <input id="addTask" type="text">
-                            <button v-on:click="addTask">Add Task</button>
+                            <input v-cloak id="addTask" type="text">
+                            <button v-cloak v-on:click="addTask">Add Task</button>
                         </div>
                         <div class="col-md-6">
                             <div class="completedTasks">
                                 <h2>Completed Tasks</h2>
-                                <div class="task-list">
+                                <div v-cloak class="task-list">
                                     <div class="list-item" v-for="task in tasks" v-show="task.completed && task.deleted_at == null">
                                         <div class="col-md-6 list-text">
                                             @{{ task.task }}
@@ -115,7 +115,7 @@
                         <div class="col-md-12">
                             <div class="sharedTasks">
                                 <h2>Shared Tasks</h2>                                
-                                <div class="task-list">
+                                <div v-cloak class="task-list">
                                     <div class="list-item" v-for="sharedTask in sharedTasks" v-show="sharedTask.deleted_at == null">
                                         <div class="col-md-6 list-text">
                                             @{{ sharedTask.parent_task.task }}

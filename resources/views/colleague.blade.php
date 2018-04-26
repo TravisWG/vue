@@ -9,7 +9,7 @@
                             <div id="colleagues">
                                 <div class="row">
                                     <h1>Your Colleagues</h1>
-                                    <div v-show="colleagues" class="row">
+                                    <div v-cloak v-show="colleagues" class="row">
                                         <div class="col-md-6" v-for="colleague in colleagues">
                                             <div class="list-item">
                                                 <div class="col-md-7 list-text">
@@ -34,7 +34,7 @@
                                         Find colleagues by name or email address:
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="">
+                                        <div v-cloak>
                                             <div v-show="inputError" class="errors">
                                                 You must enter search parameters.
                                             </div>
@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div v-show="colleagues || errorMessage" class="row">
-                                    <div class="col-md-6" v-for="colleague in colleagues">
+                                    <div class="col-md-6" v-cloak v-for="colleague in colleagues">
                                         <div class="list-item">
                                             <div class="col-md-7 list-text">
                                                 @{{ colleague.name }}<br>

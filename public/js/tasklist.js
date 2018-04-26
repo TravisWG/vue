@@ -115,7 +115,6 @@ var tasklist = new Vue({
                     task: task
                 })
                 .then(function(response) {
-                    console.log(resonse.date);
                     task.deleted_at = response.data.task.deleted_at;
                 })
                 .catch(function(error) {

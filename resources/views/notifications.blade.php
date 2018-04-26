@@ -9,7 +9,7 @@
                             <div id="colleague-notifications">
                                 <div class="row">
                                     <h1> Notifications</h1>
-                                    <div class="col-md-6" v-for="colleagueRequest in colleagueRequests">                              
+                                    <div v-cloak class="col-md-6" v-for="colleagueRequest in colleagueRequests">                              
                                         <div class="list-item">
                                             <div class="col-md-6">
                                                 You have received a colleague request!<br><br>
