@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class TasklistController extends Controller
 {
     public function __construct(){
-    $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     public function index(){
@@ -35,6 +35,12 @@ class TasklistController extends Controller
         $tasks = Task::withTrashed()->where('tasklist_id', $tasklist_id)->get();
 
         return view('archives')->with(compact('tasks'));
+    }
+
+    public function getSharedTasklist(){
+        $sharedTasks = SharedTask::with('parentTask', 'parentTask.tasklist.user')->where('user_id', Auth::user()->id)->get();
+
+        return $sharedTasks;
     }
 
     public function addNewTask(Request $request) {
@@ -82,6 +88,16 @@ class TasklistController extends Controller
     public function removeTask(Request $request) {
         $return = ['status' => 'error'];
         $task = Task::where('id', $request->task['id'])->first();
+        if($task && $task->checkOwnership()){
+            $task->delete();
+            $return = ['status' => 'success', 'task' => $task];
+        }
+        return $return;
+    }
+
+    public function removeSharedTask(Request $request) {
+        $return = ['status' => 'error'];
+        $task = SharedTask::where('id', $request->task['id'])->first();
         if($task && $task->checkOwnership()){
             $task->delete();
             $return = ['status' => 'success', 'task' => $task];

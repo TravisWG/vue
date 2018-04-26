@@ -22,11 +22,13 @@ Route::get('/tasklist', 'TasklistController@index')->name('task-list');
 Route::get('/tasklist/archived', 'TasklistController@getArchivedTasks')->name('archived-tasks');
 
 Route::get('/tasklist/fetch', 'TasklistController@getTasklist');
+Route::get('/tasklist/shared/fetch','TasklistController@getSharedTasklist');
 
 Route::post('tasklist/addTask', 'TasklistController@addNewTask');
 Route::post('tasklist/shareTask', 'TasklistController@shareTask');
 Route::post('tasklist/editTask', 'TasklistController@editTask');
 Route::post('tasklist/removeTask', 'TasklistController@removeTask');
+Route::post('tasklist/removeSharedTask', 'TasklistController@removeSharedTask');
 Route::post('tasklist/toggleStatus', 'TasklistController@toggleTaskCompletionStatus');
 
 Route::post('tasklist/startTimer', 'TasklistController@startTimer');

@@ -2,6 +2,7 @@ var tasklist = new Vue({
     el: "#tasklist",
     data: {
         tasks: [],
+        sharedTasks: [],
         colleagues: [],
         showModal: false,
         modalTaskId: null,
@@ -17,6 +18,10 @@ var tasklist = new Vue({
             axios.get('/tasklist/fetch')
                 .then(response => {
                     self.tasks = response.data;
+                });
+            axios.get('/tasklist/shared/fetch')
+                .then(response => {
+                    self.sharedTasks = response.data;
                 });
         },
 
@@ -96,6 +101,21 @@ var tasklist = new Vue({
                     task: task
                 })
                 .then(function(response) {
+                    task.deleted_at = response.data.task.deleted_at;
+                })
+                .catch(function(error) {
+                    console.log("Error removing task")
+                });
+        },
+
+        removeSharedTask: function(task) {
+            var self = this;
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            axios.post('/tasklist/removeSharedTask', {
+                    task: task
+                })
+                .then(function(response) {
+                    console.log(resonse.date);
                     task.deleted_at = response.data.task.deleted_at;
                 })
                 .catch(function(error) {
