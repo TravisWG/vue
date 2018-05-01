@@ -39,6 +39,9 @@ Route::get('task/{id}/timelogs', 'TaskController@viewTimelogs')->name('viewTimel
 Route::get('colleagues', 'ColleagueController@index')->name('colleagues');
 Route::post('colleagues/search', 'ColleagueController@search');
 Route::post('colleagues/requestAdd', 'ColleagueController@requestAdd');
+Route::post('colleagues/cancelRequest', 'ColleagueController@requestCancel');
+Route::post('colleagues/unblockColleague', 'ColleagueController@unblockColleague');
+Route::post('colleagues/removeColleague', 'ColleagueController@removeColleague');
 Route::post('colleagues/requestResponse', 'ColleagueController@postRequestResponse');
 Route::get('colleagues/getColleagues', 'ColleagueController@getColleagues');
 Route::get('colleagues/getColleagueRequests', 'ColleagueController@getColleagueRequests');

@@ -69,6 +69,69 @@ var colleagueSearch = new Vue({
                     .catch(function(error) {
 
                     });
+        },
+
+        cancelRequest: function(colleague) {
+            var self = this;
+            axios.post('/colleagues/cancelRequest', {
+                        id: colleague.id,
+                    })
+                    .then(function(response) {
+                        colleague.requestMessage = "Request canceled!";
+                    })
+                    .catch(function(error) {
+
+                    });
+        },
+        
+        requestReply: function(colleague, reply){
+            axios.post('/colleagues/requestResponse', {
+                        userId: colleague.id,
+                        reply: reply,
+                        colleague: true,
+                    })
+                    .then(function(response) {
+                        if (response.data.status = 'success'){
+                            if (reply == 'accept'){
+                                colleague.requestMessage = 'Colleague request accepted.';
+                            } else if (reply == 'deny'){
+                                colleague.requestMessage = 'Colleague request denied.';
+                            } else if (reply == 'block'){
+                                colleague.requestMessage = 'Colleague blocked.';
+                            }
+                        }
+                    })
+                    .catch(function(error) {
+                    });
+
+        },
+
+        unblockColleague: function(colleague){
+            axios.post('/colleagues/unblockColleague', {
+                        colleagueId: colleague.id,
+                    })
+                    .then(function(response) {
+                        if (response.data.status = 'success'){
+                            colleague.requestStatus = "notColleague"
+                        }
+                    })
+                    .catch(function(error) {
+                    });
+
+        },
+
+        removeColleague: function(colleague){
+            axios.post('/colleagues/removeColleague', {
+                        colleagueId: colleague.id,
+                    })
+                    .then(function(response) {
+                        if (response.data.status = 'success'){
+                            colleague.requestMessage = "Colleague removed."
+                        }
+                    })
+                    .catch(function(error) {
+                    });
+
         }
     }
 })

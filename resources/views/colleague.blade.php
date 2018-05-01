@@ -56,16 +56,49 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
-                                                <div class="list-buttons" v-show="colleague.requestMessage == null">
-                                                    <button  v-on:click="addColleague(colleague)">Add Colleague</button>
+                                                <div v-show="colleague.requestMessage == null">
+                                                    <div class="list-buttons" v-show="colleague.requestStatus == 'notColleague'">
+                                                        <button  v-on:click="addColleague(colleague)">Add Colleague</button>
+                                                    </div>
+
+                                                    <div class="list-buttons" v-show="colleague.requestStatus == 'requestPending'">                                                    
+                                                        Request Pending.
+                                                        <button  v-on:click="cancelRequest(colleague)">Cancel Request</button>
+                                                    </div>
+
+                                                    <div class="list-buttons" v-show="colleague.requestStatus == 'requested'">                                                    
+                                                        Colleague has requested to add you.
+                                                        <button v-on:click="requestReply(colleague, 'accept')">
+                                                            <i class="fas fa-check"></i> 
+                                                            Accept Request
+                                                        </button>
+                                                        <button v-on:click="requestReply(colleague, 'deny')">
+                                                            <i class="fas fa-times"></i> 
+                                                            Deny Request
+                                                        </button>
+                                                        <button v-on:click="requestReply(colleague, 'block')">
+                                                            <i class="fas fa-ban"></i> 
+                                                            Block User
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="list-buttons" v-show="colleague.requestStatus == 'blocked'">                                                    
+                                                        You have blocked the user.
+                                                        <button  v-on:click="unblockColleague(colleague)">Unblock</button>
+                                                    </div>
+
+                                                    <div class="list-buttons" v-show="colleague.requestStatus == 'currentColleague'">                                                    
+                                                        Already your colleague.
+                                                        <button  v-on:click="removeColleague(colleague)">Remove Colleague</button>
+                                                    </div>
                                                 </div>
-                                                <div class="list-message" v-show="colleague.requestMessage != null">                                                    
-                                                    @{{ colleague.requestMessage }}
+                                                <div class="list-message" v-show="colleague.requestMessage != null">                                                     
+                                                    @{{ colleague.requestMessage }} 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-show="errorMessage">
+                                    <div v-cloack v-show="errorMessage">
                                         <h3>@{{errorMessage}}</h3>
                                     </div>                
                                 </div>

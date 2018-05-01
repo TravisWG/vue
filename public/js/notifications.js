@@ -16,7 +16,6 @@ var colleagueNotifications = new Vue({
         },
 
         requestReply: function(colleagueRequest, reply){
-            console.log(colleagueRequest);
             axios.post('/colleagues/requestResponse', {
                         id: colleagueRequest.id,
                         reply: reply,

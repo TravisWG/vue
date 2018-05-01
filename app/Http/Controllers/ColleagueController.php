@@ -41,12 +41,13 @@ class ColleagueController extends Controller
                 ->get();
 
             foreach($users as $user){
+                $user->requestStatus = 'notColleague';
                 $user->requestMessage = null;
 
                 if(count($sentColleagueRequests) > 0){
                     foreach($sentColleagueRequests as $sentColleagueRequest){
                         if($sentColleagueRequest->colleague_id == $user->id){
-                            $user->requestMessage = 'Request Pending';
+                            $user->requestStatus = 'requestPending';
                             break;
                         }
                     }
@@ -54,7 +55,7 @@ class ColleagueController extends Controller
                 if(count($receivedColleagueRequests) > 0){
                     foreach($receivedColleagueRequests as $receivedColleagueRequest){
                         if($receivedColleagueRequest->user_id == $user->id){
-                            $user->requestMessage = 'Colleague has requested to add you.';
+                            $user->requestStatus = 'requested';
                             break;
                         }
                     }
@@ -62,11 +63,11 @@ class ColleagueController extends Controller
                 
                 foreach(Auth::user()->colleagueRelationships as $colleague){
                     if($colleague->colleague_id == $user->id && $colleague->blocked == true){
-                        $user->requestMessage = 'You have blocked this user.';
+                        $user->requestStatus = 'blocked';
                         break;
                     }
                     if($colleague->colleague_id == $user->id && $colleague->blocked == false){
-                        $user->requestMessage = 'Already your colleague.';
+                        $user->requestStatus = 'currentColleague';
                         break;
                     }
                 }
@@ -86,6 +87,46 @@ class ColleagueController extends Controller
             "user_id" => Auth::user()->id,
             "colleague_id" => $colleagueId,            
         ]);
+
+        return ["status" => "success"];
+    }
+
+    public function requestCancel(Request $request){
+        $colleagueId = $request->id;
+
+        $colleagueRequest = ColleagueRequest::where('user_id', Auth::user()->id)
+            ->where('colleague_id', $colleagueId)
+            ->firstOrFail();
+
+        $colleagueRequest->delete();
+
+        return ["status" => "success"];
+    }
+
+    public function unblockColleague(Request $request){
+        $colleagueId = $request->colleagueId;
+
+        $colleagueRelationship = Colleague::where('user_id', Auth::user()->id)
+            ->where('colleague_id', $colleagueId)
+            ->firstOrFail();
+
+        $colleagueRelationship->delete();
+
+        return ["status" => "success"];
+    }
+
+    public function removeColleague(Request $request){
+        $colleagueId = $request->colleagueId;
+
+        $colleagueRelationships = Colleague::where('user_id', Auth::user()->id)
+            ->where('colleague_id', $colleagueId)
+            ->orWhere('user_id', $colleagueId)
+            ->where('colleague_id', Auth::user()->id)
+            ->get();
+
+        foreach($colleagueRelationships as $colleagueRelationship){            
+            $colleagueRelationship->delete();
+        }
 
         return ["status" => "success"];
     }
@@ -111,7 +152,14 @@ class ColleagueController extends Controller
     }
 
     public function postRequestResponse(Request $request) {
-        $colleagueRequest = ColleagueRequest::find($request->id);
+
+        if($request->colleague) {
+            $colleagueRequest = ColleagueRequest::where('user_id', $request->userId)
+                ->where('colleague_id', Auth::user()->id)
+                ->first();
+        } elseif($request->colleagueRequest) {
+            $colleagueRequest = ColleagueRequest::find($request->id);
+        }
 
         if($request->reply == 'accept'){
             $colleagueRequest->accepted = true;
@@ -126,9 +174,9 @@ class ColleagueController extends Controller
                 "colleague_id" => $colleagueRequest->sendingUser->id,            
             ]);
 
-        }else if ($request->reply == 'deny') {
+        } elseif ($request->reply == 'deny') {
             $colleagueRequest->rejected = true;
-        }else if ($request->reply == 'block') {
+        } elseif ($request->reply == 'block') {
             $colleagueRequest->blocked = true;
             //create a Colleague Relationship for the blocking user
             $colleagueRelationship = Colleague::firstOrcreate([
