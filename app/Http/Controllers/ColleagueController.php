@@ -28,18 +28,18 @@ class ColleagueController extends Controller
                 ->where('id', '!=', Auth::user()->id)
                 ->get();
         }
-
-        $sentColleagueRequests = ColleagueRequest::where('user_id', Auth::user()->id)
-            ->where('accepted', false) 
-            ->where('rejected', false)
-            ->get();
-
-        $receivedColleagueRequests = ColleagueRequest::where('colleague_id', Auth::user()->id)
-            ->where('accepted', false) 
-            ->where('rejected', false)
-            ->get();
     	
         if(count($users) > 0){
+            $sentColleagueRequests = ColleagueRequest::where('user_id', Auth::user()->id)
+                ->where('accepted', false) 
+                ->where('rejected', false)
+                ->get();
+
+            $receivedColleagueRequests = ColleagueRequest::where('colleague_id', Auth::user()->id)
+                ->where('accepted', false) 
+                ->where('rejected', false)
+                ->get();
+
             foreach($users as $user){
                 $user->requestMessage = null;
 
@@ -47,6 +47,7 @@ class ColleagueController extends Controller
                     foreach($sentColleagueRequests as $sentColleagueRequest){
                         if($sentColleagueRequest->colleague_id == $user->id){
                             $user->requestMessage = 'Request Pending';
+                            break;
                         }
                     }
                 }
@@ -54,7 +55,19 @@ class ColleagueController extends Controller
                     foreach($receivedColleagueRequests as $receivedColleagueRequest){
                         if($receivedColleagueRequest->user_id == $user->id){
                             $user->requestMessage = 'Colleague has requested to add you.';
+                            break;
                         }
+                    }
+                }
+                
+                foreach(Auth::user()->colleagueRelationships as $colleague){
+                    if($colleague->colleague_id == $user->id && $colleague->blocked == true){
+                        $user->requestMessage = 'You have blocked this user.';
+                        break;
+                    }
+                    if($colleague->colleague_id == $user->id && $colleague->blocked == false){
+                        $user->requestMessage = 'Already your colleague.';
+                        break;
                     }
                 }
             }    	   

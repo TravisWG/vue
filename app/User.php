@@ -34,4 +34,12 @@ class User extends Authenticatable
     public function tasks() {
         return $this->hasManyThrough('App\Task', 'App\Tasklist');
     }
+
+    public function colleagueRelationships() {
+        return $this->hasMany('App\Colleague', 'user_id', 'id');
+    }
+
+    public function colleagues() {
+        return $this->hasManyThrough('App\User', 'App\Colleague','id', 'id', 'id', 'colleague_id');
+    }
 }
