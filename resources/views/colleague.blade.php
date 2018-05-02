@@ -98,7 +98,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-cloack v-show="errorMessage">
+                                    <div v-cloak v-show="errorMessage">
                                         <h3>@{{errorMessage}}</h3>
                                     </div>                
                                 </div>
